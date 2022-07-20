@@ -1,25 +1,22 @@
-import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
-import java.util.Date;
 
+@DisplayName("Base Test")
+@ExtendWith(ScreenshotExtension.class)
+class LoginPagemain extends Setup {
 
-public class LoginPagemain extends Setup {
-
-    Date date = new Date();
 
     @Test
     public void verifyElementSelection(){
         Loginpage loginpage = new Loginpage(driver);
-        driver.get("https://www.pecodesoftware.com/qa-portal/registerlogin/registerlogin.php");
         Assert.assertEquals(true,loginpage.loginInput.isDisplayed());
         Assert.assertEquals(true,loginpage.password.isDisplayed());
         Assert.assertEquals(true,loginpage.enter.isDisplayed());
@@ -28,23 +25,18 @@ public class LoginPagemain extends Setup {
     @Test
     public void testClick(){
         Loginpage loginpage = new Loginpage(driver);
-        driver.get("https://www.pecodesoftware.com/qa-portal/registerlogin/registerlogin.php");
-        try {
             loginpage.enter.click();
-            String screenshotName = date.toString().replace(" ","-").replace(":","-");
-            File screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(screenshot,new File("/Users/mac/IdeaProjects/TestProjectAQA/src/Screenshot" + screenshotName +".png"));
-            Thread.sleep(2000);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
+        Assert.fail();
+        screenshot();
     }
 
 
     @Test
-    public void testPass(){
+    public void testPass() throws FileNotFoundException {
         Loginpage loginpage = new Loginpage(driver);
-        driver.get("https://www.pecodesoftware.com/qa-portal/registerlogin/registerlogin.php");
+
+
 
         JSONParser parser = new JSONParser();
         try(Reader reader = new FileReader("/Users/mac/IdeaProjects/TestProjectAQA/src/main/resources/user.json"))  {
@@ -53,11 +45,8 @@ public class LoginPagemain extends Setup {
             loginpage.password.sendKeys(jsonObject.get("UserPass").toString());
 
             loginpage.enter.click();
-            String screenshotName = date.toString().replace(" ","-").replace(":","-");
+            screenshot();
 
-            File screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(screenshot,new File("/Users/mac/IdeaProjects/TestProjectAQA/src/Screenshot" + screenshotName +".png"));
-            Thread.sleep(2000);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -67,8 +56,6 @@ public class LoginPagemain extends Setup {
     @Test
     public void testLog(){
         Loginpage loginpage = new Loginpage(driver);
-        driver.get("https://www.pecodesoftware.com/qa-portal/registerlogin/registerlogin.php");
-
 
         JSONParser parser = new JSONParser();
         try(Reader reader = new FileReader("/Users/mac/IdeaProjects/TestProjectAQA/src/main/resources/user.json"))  {
@@ -77,23 +64,16 @@ public class LoginPagemain extends Setup {
             loginpage.loginInput.sendKeys(jsonObject.get("UserName").toString());
             loginpage.password.clear();
             loginpage.enter.click();
-            String screenshotName = date.toString().replace(" ","-").replace(":","-");
-
-            File screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(screenshot,new File("/Users/mac/IdeaProjects/TestProjectAQA/src/Screenshot" + screenshotName +".png"));
-            Thread.sleep(2000);
+            screenshot();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
     }
 
-
-
     @Test()
     public void testAll() {
         Loginpage loginpage = new Loginpage(driver);
-        driver.get("https://www.pecodesoftware.com/qa-portal/registerlogin/registerlogin.php");
 
 
         JSONParser parser = new JSONParser();
@@ -103,12 +83,8 @@ public class LoginPagemain extends Setup {
             loginpage.loginInput.sendKeys(jsonObject.get("UserName").toString());
             loginpage.password.sendKeys(jsonObject.get("UserPass").toString());
             loginpage.enter.click();
+            screenshot();
 
-            String screenshotName = date.toString().replace(" ","-").replace(":","-");
-
-            File screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(screenshot,new File("/Users/mac/IdeaProjects/TestProjectAQA/src/Screenshot" + screenshotName +".png"));
-            Thread.sleep(2000);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
